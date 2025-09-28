@@ -55,6 +55,29 @@ import {
 } from '../controllers/ai-fraud';
 
 import {
+  // Node Management
+  registerRelayNode,
+  deregisterRelayNode,
+  getNetworkStatus,
+  getNodeDetails,
+  getNodesByOperator,
+  getCityHubDetails,
+  simulateNetworkLoad,
+  
+  // Integrated Flow
+  processNFCThroughDePIN,
+  
+  // Staking & Rewards
+  stakeForNode,
+  claimRewards,
+  getRewardsSummary,
+  
+  // Analytics & Dashboard
+  getNetworkAnalytics,
+  getDePINDashboard
+} from '../controllers/depin';
+
+import {
   // RWA Tokenization
   tokenizeAsset,
   processNFCTokenization,
@@ -198,6 +221,27 @@ router.post('/ai/nfc-pipeline/optimize-rural', optimizeForRuralNetworks);
 // AI Dashboard & Simulation
 router.get('/ai/dashboard', getAIDashboard);
 router.post('/ai/simulate/rural-traffic', simulateRuralTraffic);
+
+// DePIN Network Management endpoints
+router.post('/depin/nodes/register', registerRelayNode);
+router.delete('/depin/nodes/:nodeId', deregisterRelayNode);
+router.get('/depin/network/status', getNetworkStatus);
+router.get('/depin/nodes/:nodeId', getNodeDetails);
+router.get('/depin/operators/:operatorId/nodes', getNodesByOperator);
+router.get('/depin/cities/:cityId', getCityHubDetails);
+router.post('/depin/network/simulate-load', simulateNetworkLoad);
+
+// DePIN Integrated Flow
+router.post('/depin/nfc/process', processNFCThroughDePIN);
+
+// DePIN Staking & Rewards
+router.post('/depin/stake', stakeForNode);
+router.post('/depin/rewards/claim', claimRewards);
+router.get('/depin/rewards/:operatorId', getRewardsSummary);
+
+// DePIN Analytics & Dashboard
+router.get('/depin/analytics', getNetworkAnalytics);
+router.get('/depin/dashboard', getDePINDashboard);
 
 // System endpoints
 router.get('/health', (req, res) => res.send({ version }));
