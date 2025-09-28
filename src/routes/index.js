@@ -30,6 +30,31 @@ import {
 } from '../controllers/compliance';
 
 import {
+  // AI Fraud Detection
+  analyzeTransaction,
+  provideFeedback,
+  getPerformanceMetrics,
+  getRealTimeStats,
+  getHCSLogs,
+  
+  // HCS Log Analyzer
+  getAnomalyReport,
+  getHCSMetrics,
+  getUserBehaviorProfile,
+  
+  // NFC AI Pipeline
+  processNFCScan,
+  getPipelineMetrics,
+  getPipelineStatus,
+  getActivePipelines,
+  optimizeForRuralNetworks,
+  
+  // Dashboard & Simulation
+  getAIDashboard,
+  simulateRuralTraffic
+} from '../controllers/ai-fraud';
+
+import {
   // RWA Tokenization
   tokenizeAsset,
   processNFCTokenization,
@@ -150,6 +175,29 @@ router.get('/oracle/market-summary', getMarketSummary);
 
 // RWA Dashboard
 router.get('/rwa/dashboard/:userAccountId', getRWADashboard);
+
+// AI Fraud Detection endpoints
+router.post('/ai/fraud-detection/analyze', analyzeTransaction);
+router.post('/ai/fraud-detection/feedback', provideFeedback);
+router.get('/ai/fraud-detection/metrics', getPerformanceMetrics);
+router.get('/ai/fraud-detection/stats', getRealTimeStats);
+router.get('/ai/fraud-detection/logs', getHCSLogs);
+
+// HCS Log Analyzer endpoints
+router.get('/ai/hcs/anomalies', getAnomalyReport);
+router.get('/ai/hcs/metrics', getHCSMetrics);
+router.get('/ai/hcs/profile/:accountId', getUserBehaviorProfile);
+
+// NFC AI Pipeline endpoints
+router.post('/ai/nfc-pipeline/process', processNFCScan);
+router.get('/ai/nfc-pipeline/metrics', getPipelineMetrics);
+router.get('/ai/nfc-pipeline/status/:pipelineId', getPipelineStatus);
+router.get('/ai/nfc-pipeline/active', getActivePipelines);
+router.post('/ai/nfc-pipeline/optimize-rural', optimizeForRuralNetworks);
+
+// AI Dashboard & Simulation
+router.get('/ai/dashboard', getAIDashboard);
+router.post('/ai/simulate/rural-traffic', simulateRuralTraffic);
 
 // System endpoints
 router.get('/health', (req, res) => res.send({ version }));
