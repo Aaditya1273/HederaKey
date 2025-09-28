@@ -29,6 +29,8 @@
     "morgan": "^1.10.1",
     "scrypt": "^6.0.3",
     "@hashgraph/sdk": "^2.49.2",
+    "jsonwebtoken": "^9.0.2",
+    "crypto": "^1.0.1",
     "winston": "^2.4.2",
     "babel-cli": "^6.9.0",
     "babel-core": "^6.9.0",
