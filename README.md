@@ -407,6 +407,74 @@ Content-Type: application/json
 }
 ```
 
+---
+
+## 🛠️ Technology Stack
+
+### 🔧 Backend Infrastructure
+
+```javascript
+// Core Technologies
+{
+  "runtime": "Node.js 18+",
+  "framework": "Express.js",
+  "database": "PostgreSQL + Redis",
+  "blockchain": "Hedera Hashgraph",
+  "ai_ml": "Python + Scikit-learn",
+  "privacy": "ZK-SNARKs + Homomorphic"
+}
+```
+
+### ⚛️ Frontend Technologies
+
+```javascript
+// Frontend Stack
+{
+  "framework": "React 18",
+  "styling": "Styled-components",
+  "animations": "Framer Motion",
+  "state": "Redux Toolkit",
+  "web3": "Hedera SDK",
+  "mobile": "React Native"
+}
+```
+
+### 🔗 Hedera Integration
+
+```javascript
+// Hedera Services Used
+{
+  "hts": "Token creation & management",
+  "hcs": "Consensus & logging",
+  "hfs": "File storage",
+  "smart_contracts": "Solidity contracts",
+  "native_tokens": "HBAR payments"
+}
+```
+
+---
+
+## 🌟 Acknowledgments
+
+### 🏆 Awards & Recognition
+- **🥇 Best DePIN Solution** - Hedera Hackathon 2024
+- **🏅 Most Innovative NFC Integration** - Web3 Summit
+- **🎯 Best Use of Hedera** - Developer Awards
+
+### 🤝 Partners & Supporters
+- **Hedera Hashgraph** - Blockchain infrastructure
+- **Chainlink** - Oracle price feeds  
+- **IPFS** - Decentralized storage
+- **NFC Forum** - Standards compliance
+
+---
+
+## 📄 License
+
+MIT License - Copyright (c) 2024 HederaKey Team
+
+---
+
 ### Config
 
 ```js
