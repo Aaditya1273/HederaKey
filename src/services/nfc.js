@@ -47,7 +47,7 @@ class NFCService {
       const { encryptedData, iv, authTag } = encryptedPayload;
       
       const decipher = crypto.createDecipher(this.algorithm, this.encryptionKey);
-      decipher.setAAD(Buffer.from('MindKeyNFC', 'utf8'));
+      decipher.setAAD(Buffer.from('HederaKeyNFC', 'utf8'));
       decipher.setAuthTag(Buffer.from(authTag, 'hex'));
 
       let decrypted = decipher.update(encryptedData, 'hex', 'utf8');

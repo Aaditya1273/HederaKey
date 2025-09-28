@@ -1,7 +1,7 @@
 {
   "name": "hederakey",
   "version": "2.0.0",
-  "description": "Decentralized Physical Infrastructure for Real-World Assets - NFC to Blockchain Bridge",
+  "description": "HederaKey - NFC Blockchain Bridge for Real-World Assets on Hedera Hashgraph",
   "main": "dist",
   "engines": {
     "node": ">=18.0.0",
@@ -39,7 +39,16 @@
     "deploy:mainnet": "hardhat run scripts/deploy.js --network hederaMainnet",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
     "verify:testnet": "hardhat verify --network hederaTestnet",
-    "test:contracts": "hardhat test"
+    "test:contracts": "hardhat test",
+    "test:integration": "node test-integration.js",
+    "deploy:prod": "chmod +x deploy-production.sh && ./deploy-production.sh production",
+    "deploy:staging": "chmod +x deploy-production.sh && ./deploy-production.sh staging",
+    "docker:build": "docker build -t mindkey-nfc:latest .",
+    "docker:run": "docker-compose -f docker-compose.prod.yml up -d",
+    "docker:stop": "docker-compose -f docker-compose.prod.yml down",
+    "docker:logs": "docker-compose -f docker-compose.prod.yml logs -f",
+    "backup:db": "docker-compose -f docker-compose.prod.yml exec postgres pg_dump -U mindkey mindkey_prod > backup.sql",
+    "restore:db": "docker-compose -f docker-compose.prod.yml exec -T postgres psql -U mindkey mindkey_prod < backup.sql"
   },
   "repository": {
     "type": "git",

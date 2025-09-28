@@ -1,4 +1,4 @@
-name: MindKey NFC - CI/CD Pipeline
+name: HederaKey NFC - CI/CD Pipeline
 
 on:
   push:
@@ -109,8 +109,8 @@ jobs:
         
     - name: Build Docker image
       run: |
-        docker build -t mindkey-nfc:${{ github.sha }} .
-        docker tag mindkey-nfc:${{ github.sha }} mindkey-nfc:latest
+        docker build -t hederakey-nfc:${{ github.sha }} .
+        docker tag hederakey-nfc:${{ github.sha }} hederakey-nfc:latest
         
     - name: Login to Docker Hub
       uses: docker/login-action@v3
@@ -120,8 +120,8 @@ jobs:
         
     - name: Push Docker image
       run: |
-        docker push mindkey-nfc:${{ github.sha }}
-        docker push mindkey-nfc:latest
+        docker push hederakey-nfc:${{ github.sha }}
+        docker push hederakey-nfc:latest
         
     - name: Deploy to staging
       if: github.ref == 'refs/heads/develop'

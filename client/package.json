@@ -1,7 +1,7 @@
 {
   "name": "hederakey-client",
   "version": "2.0.0",
-  "description": "HederaKey Web Client - React Frontend",
+  "description": "HederaKey Web Client - React Frontend for NFC Blockchain Bridge",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",

@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 async function main() {
-  console.log("🚀 Starting MindKey NFC Smart Contract Deployment...\n");
+  console.log("🚀 Starting HederaKey NFC Smart Contract Deployment...\n");
   
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with account:", deployer.address);
@@ -43,8 +43,8 @@ async function main() {
   const liquidityPool = await LiquidityPool.deploy(
     mockRWA.address,
     mockHBAR.address,
-    "MindKey LP Token",
-    "MKLP"
+    "HederaKey LP Token",
+    "HKLP"
   );
   await liquidityPool.deployed();
   console.log("✅ Liquidity Pool deployed to:", liquidityPool.address);

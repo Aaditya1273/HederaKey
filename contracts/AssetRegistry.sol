@@ -53,7 +53,7 @@ contract AssetRegistry is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard {
     uint256 public totalAssets;
     uint256 public totalValuation;
     
-    constructor() ERC721("MindKey Real World Assets", "MKRWA") {}
+    constructor() ERC721("HederaKey Real World Assets", "HKRWA") {}
     
     /**
      * @dev Mint new asset NFT with NFC tag

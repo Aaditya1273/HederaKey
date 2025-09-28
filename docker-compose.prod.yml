@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   # Main Application
-  mindkey-api:
+  hederakey-api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mindkey-api
+    container_name: hederakey-api
     restart: unless-stopped
     ports:
       - "8080:8080"

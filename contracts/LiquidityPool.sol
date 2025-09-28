@@ -37,7 +37,6 @@ contract LiquidityPool is ERC20, ReentrancyGuard, Ownable {
         uint256 amountAIn,
         uint256 amountBIn,
         uint256 amountAOut,
-        uint256 amountBOut,
         address indexed to
     );
     event Sync(uint256 reserveA, uint256 reserveB);
