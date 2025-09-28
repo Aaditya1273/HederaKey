@@ -11,6 +11,9 @@ require('dotenv').config();
 const hederaService = require('./src/services/hedera');
 const nfcService = require('./src/services/nfc');
 const unstoppableService = require('./src/services/unstoppable');
+const contractService = require('./src/services/contracts');
+const dbService = require('./src/database/sqlite');
+const aiService = require('./src/services/ai-integration');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -31,13 +34,35 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString(),
-    version: '2.0.0',
-    service: 'HederaKey API'
-  });
+app.get('/health', async (req, res) => {
+  try {
+    const [dbHealth, aiHealth, contractHealth] = await Promise.all([
+      dbService.healthCheck(),
+      aiService.healthCheck(),
+      contractService.getNetworkInfo()
+    ]);
+
+    res.json({ 
+      status: 'OK', 
+      timestamp: new Date().toISOString(),
+      version: '2.0.0',
+      service: 'HederaKey API',
+      services: {
+        database: dbHealth,
+        ai: aiHealth,
+        contracts: contractHealth,
+        hedera: hederaService ? 'ready' : 'not initialized',
+        nfc: 'ready',
+        unstoppable: 'ready'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'ERROR',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Mock API endpoints for demo

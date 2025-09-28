@@ -33,7 +33,13 @@
     "db:seed": "node scripts/seed.js",
     "setup": "npm install && cd client && npm install",
     "start:simple": "concurrently \"node server.js\" \"cd client && npm start\"",
-    "install:simple": "npm install --no-optional --ignore-scripts"
+    "install:simple": "npm install --no-optional --ignore-scripts",
+    "compile": "hardhat compile",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network hederaTestnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network hederaMainnet",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "verify:testnet": "hardhat verify --network hederaTestnet",
+    "test:contracts": "hardhat test"
   },
   "repository": {
     "type": "git",
@@ -50,6 +56,7 @@
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "ethers": "^5.7.2",
     "express": "^4.21.2",
     "express-rate-limit": "^7.1.5",
     "helmet": "^7.1.0",
@@ -65,8 +72,12 @@
     "@babel/core": "^7.24.0",
     "@babel/node": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^4.9.0",
+    "@openzeppelin/hardhat-upgrades": "^2.0.0",
     "concurrently": "^8.2.2",
     "eslint": "^9.0.0",
+    "hardhat": "^2.19.0",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.0",
     "prisma": "^5.7.0"
