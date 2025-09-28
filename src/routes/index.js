@@ -78,6 +78,29 @@ import {
 } from '../controllers/depin';
 
 import {
+  // ZK Proofs
+  generateZKProof,
+  verifyZKProof,
+  
+  // Data Anonymization
+  anonymizeNFCData,
+  anonymizeDomainData,
+  
+  // Privacy-Preserving AI
+  analyzeTransactionPrivately,
+  updateModelPrivately,
+  
+  // Privacy Management
+  createPrivacyPreservingID,
+  processEncryptedPayload,
+  
+  // Monitoring & Audit
+  getPrivacyMetrics,
+  getPrivacyDashboard,
+  generatePrivacyAudit
+} from '../controllers/privacy';
+
+import {
   // RWA Tokenization
   tokenizeAsset,
   processNFCTokenization,
@@ -242,6 +265,19 @@ router.get('/depin/rewards/:operatorId', getRewardsSummary);
 // DePIN Analytics & Dashboard
 router.get('/depin/analytics', getNetworkAnalytics);
 router.get('/depin/dashboard', getDePINDashboard);
+
+// Privacy & ZK Proof endpoints
+router.post('/privacy/zk/generate', generateZKProof);
+router.post('/privacy/zk/verify', verifyZKProof);
+router.post('/privacy/anonymize/nfc', anonymizeNFCData);
+router.post('/privacy/anonymize/domain', anonymizeDomainData);
+router.post('/privacy/ai/analyze', analyzeTransactionPrivately);
+router.post('/privacy/ai/update', updateModelPrivately);
+router.post('/privacy/id/create', createPrivacyPreservingID);
+router.post('/privacy/payload/process', processEncryptedPayload);
+router.get('/privacy/metrics', getPrivacyMetrics);
+router.get('/privacy/dashboard', getPrivacyDashboard);
+router.get('/privacy/audit', generatePrivacyAudit);
 
 // System endpoints
 router.get('/health', (req, res) => res.send({ version }));
