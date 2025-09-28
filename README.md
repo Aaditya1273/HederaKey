@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Demo](https://img.shields.io/badge/Live%20Demo-Available-brightgreen?style=for-the-badge)](https://hederakey-demo.netlify.app)
 
-**🏆 Winner - Best DePIN Solution | 🥇 Best Use of Hedera | 🎯 Most Innovative NFC Integration**
+
 
 *Bridging Physical and Digital Worlds Through Zero-Knowledge Privacy and Decentralized Infrastructure*
 
