@@ -1,0 +1,172 @@
+name: MindKey NFC - CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '20.x'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        npm ci
+        pip install -r requirements.txt
+        
+    - name: Install client dependencies
+      run: |
+        cd client
+        npm ci
+        
+    - name: Run linting
+      run: |
+        npm run lint
+        
+    - name: Compile smart contracts
+      run: |
+        npm run compile
+        
+    - name: Run unit tests
+      run: |
+        npm test
+        
+    - name: Build client
+      run: |
+        cd client
+        npm run build
+        
+    - name: Run integration tests
+      run: |
+        npm run test:integration
+      env:
+        NODE_ENV: test
+        
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run npm audit
+      run: npm audit --audit-level moderate
+      
+    - name: Run Snyk security scan
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high
+        
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    needs: [test, security-scan]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd client && npm ci
+        
+    - name: Build application
+      run: |
+        npm run build
+        
+    - name: Build Docker image
+      run: |
+        docker build -t mindkey-nfc:${{ github.sha }} .
+        docker tag mindkey-nfc:${{ github.sha }} mindkey-nfc:latest
+        
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Push Docker image
+      run: |
+        docker push mindkey-nfc:${{ github.sha }}
+        docker push mindkey-nfc:latest
+        
+    - name: Deploy to staging
+      if: github.ref == 'refs/heads/develop'
+      run: |
+        echo "Deploying to staging environment..."
+        # Add staging deployment commands here
+        
+    - name: Deploy to production
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "Deploying to production environment..."
+        # Add production deployment commands here
+        
+    - name: Deploy smart contracts
+      if: github.ref == 'refs/heads/main'
+      run: |
+        npm run deploy:testnet
+      env:
+        HEDERA_PRIVATE_KEY: ${{ secrets.HEDERA_PRIVATE_KEY }}
+        HEDERA_ACCOUNT_ID: ${{ secrets.HEDERA_ACCOUNT_ID }}
+        
+    - name: Notify deployment
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      if: always()
+
+  performance-test:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run load tests
+      run: |
+        npx artillery run performance/load-test.yml
+        
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-results
+        path: performance/results/
