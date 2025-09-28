@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String?   @unique
+  username          String?   @unique
+  hederaAccountId   String?   @unique
+  unstoppableDomain String?   @unique
+  nfcCardId         String?   @unique
+  
+  // Profile
+  firstName         String?
+  lastName          String?
+  phoneNumber       String?
+  country           String?
+  kycStatus         KYCStatus @default(PENDING)
+  
+  // Wallet
+  publicKey         String?
+  encryptedPrivateKey String?
+  walletAddress     String?
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastLoginAt       DateTime?
+  
+  // Relations
+  assets            Asset[]
+  transactions      Transaction[]
+  fraudScores       FraudScore[]
+  depinNodes        DePINNode[]
+  
+  @@map("users")
+}
+
+model Asset {
+  id              String      @id @default(cuid())
+  name            String
+  type            AssetType
+  description     String?
+  valuation       Decimal
+  tokenId         String?     @unique
+  nfcTagId        String?     @unique
+  
+  // Metadata
+  location        String?
+  imageUrl        String?
+  documentHash    String?
+  verified        Boolean     @default(false)
+  
+  // Ownership
+  ownerId         String
+  owner           User        @relation(fields: [ownerId], references: [id])
+  
+  // Timestamps
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  transactions    Transaction[]
+  
+  @@map("assets")
+}
+
+model Transaction {
+  id              String          @id @default(cuid())
+  type            TransactionType
+  status          TransactionStatus @default(PENDING)
+  
+  // Amounts
+  amount          Decimal
+  fromToken       String?
+  toToken         String?
+  exchangeRate    Decimal?
+  
+  // Hedera
+  hederaTxId      String?         @unique
+  hederaStatus    String?
+  gasUsed         Decimal?
+  
+  // Relations
+  userId          String
+  user            User            @relation(fields: [userId], references: [id])
+  assetId         String?
+  asset           Asset?          @relation(fields: [assetId], references: [id])
+  
+  // Timestamps
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@map("transactions")
+}
+
+model FraudScore {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  
+  // Scoring
+  riskScore       Decimal
+  riskLevel       RiskLevel
+  confidence      Decimal
+  decision        FraudDecision
+  
+  // Features
+  behavioralScore Decimal?
+  locationScore   Decimal?
+  deviceScore     Decimal?
+  timeScore       Decimal?
+  
+  // Context
+  transactionId   String?
+  ipAddress       String?
+  userAgent       String?
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  
+  @@map("fraud_scores")
+}
+
+model DePINNode {
+  id              String      @id @default(cuid())
+  nodeId          String      @unique
+  city            String
+  country         String
+  latitude        Decimal?
+  longitude       Decimal?
+  
+  // Status
+  status          NodeStatus  @default(ACTIVE)
+  uptime          Decimal     @default(0)
+  latency         Int         @default(0)
+  
+  // Operator
+  operatorId      String
+  operator        User        @relation(fields: [operatorId], references: [id])
+  
+  // Rewards
+  stakedAmount    Decimal     @default(0)
+  rewardsEarned   Decimal     @default(0)
+  
+  // Timestamps
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  lastPingAt      DateTime?
+  
+  @@map("depin_nodes")
+}
+
+model NFCCard {
+  id              String    @id @default(cuid())
+  cardId          String    @unique
+  encryptedData   String
+  
+  // Metadata
+  cardType        String?
+  manufacturer    String?
+  capacity        Int?
+  
+  // Security
+  encryptionKey   String
+  accessCount     Int       @default(0)
+  lastAccessAt    DateTime?
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("nfc_cards")
+}
+
+// Enums
+enum KYCStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum AssetType {
+  FARM_SHARE
+  REAL_ESTATE
+  CARBON_CREDIT
+  COMMODITY
+  ARTWORK
+  VEHICLE
+  OTHER
+}
+
+enum TransactionType {
+  MINT
+  TRANSFER
+  SWAP
+  STAKE
+  UNSTAKE
+  BURN
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  CANCELLED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum FraudDecision {
+  APPROVE
+  REVIEW
+  BLOCK
+}
+
+enum NodeStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  OFFLINE
+}
