@@ -1,0 +1,332 @@
+[
+    {
+        "tasks.profile.name": "HBAR wallet",
+        "tasks.profile.date": "20241228T113250",
+        "tasks.profile.length": 25,
+        "tasks.profile.size": 828,
+        "tasks.profile.data": [
+            {
+                "tasks.profile.fields": {
+                    "field1": "ACCOUNT",
+                    "field2": "  "
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "837",
+                    "itemTask": "[{VAR_ACCOUNT}]  ",
+                    "itemDescription": "ACCOUNT\n  "
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "BALANCE",
+                    "field2": "  "
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "837",
+                    "itemTask": "[{VAR_BALANCE}]  ",
+                    "itemDescription": "BALANCE\n  "
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "TXID",
+                    "field2": "  "
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "837",
+                    "itemTask": "[{VAR_TXID}]  ",
+                    "itemDescription": "TXID\n  "
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Hedera Wallet",
+                    "field3": "Check balance=1;Send HBAR=2;Receive HBAR=3;Create account=4;Mint token=5;",
+                    "field2": "CHOICE"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "846",
+                    "itemTask": "Hedera Wallet|CHOICE|Check balance=1;Send HBAR=2;Receive HBAR=3;Create account=4;Mint token=5;",
+                    "itemDescription": "Question: Hedera Wallet\nVariable: {VAR_CHOICE}\nAnswers :\nText: Check balance / Value: 1\nText: Send HBAR / Value: 2\nText: Receive HBAR / Value: 3\nText: Create account / Value: 4\nText: Mint token / Value: 5"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_CHOICE}",
+                    "field3": "1",
+                    "field2": "1"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "930",
+                    "itemTask": "{VAR_CHOICE}|1|1",
+                    "itemDescription": "If values are equals\n{VAR_CHOICE}\n1\nPerform the tasks below"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_BALANCEURL}",
+                    "field3": "",
+                    "field2": "0",
+                    "field5": "true",
+                    "field4": "BALANCE"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "114",
+                    "itemTask": "{VAR_BALANCEURL}|0||BALANCE|1",
+                    "itemDescription": "{VAR_BALANCEURL}\nMethod: GET\nSave result in a variable: {VAR_BALANCE}\nWait until the end of the request to continue"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Your HBAR balance:",
+                    "field2": "{VAR_BALANCE}"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "86",
+                    "itemTask": "[Your HBAR balance:]{VAR_BALANCE}",
+                    "itemDescription": "Your HBAR balance:\n{VAR_BALANCE}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "1"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "90",
+                    "itemTask": "",
+                    "itemDescription": "Close your conditional block"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_CHOICE}",
+                    "field3": "1",
+                    "field2": "2"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "930",
+                    "itemTask": "{VAR_CHOICE}|2|1",
+                    "itemDescription": "If values are equals\n{VAR_CHOICE}\n2\nPerform the tasks below"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Send HBAR to:",
+                    "field3": "DESTINATION",
+                    "field2": "Hedera account ID:"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "841",
+                    "itemTask": "Send HBAR to:|Hedera account ID:|DESTINATION",
+                    "itemDescription": "Title : Send HBAR to:\nMessage : Hedera account ID:\nVariable name : DESTINATION"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Set amount:",
+                    "field3": "AMOUNT",
+                    "field2": "Amount in HBAR:"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "841",
+                    "itemTask": "Set amount:|Amount in HBAR:|AMOUNT",
+                    "itemDescription": "Title : Set amount:\nMessage : Amount in HBAR:\nVariable name : AMOUNT"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_TRANSACTURL}",
+                    "field3": "privateKey={VAR_PRIVATEKEY};destination={VAR_DESTINATION};amount={VAR_AMOUNT};",
+                    "field2": "TXID"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "111",
+                    "itemTask": "{VAR_TRANSACTURL}|TXID|privateKey={VAR_PRIVATEKEY};destination={VAR_DESTINATION};amount={VAR_AMOUNT};",
+                    "itemDescription": "Request: {VAR_TRANSACTURL}\nVariable: {VAR_TXID}\nPOST parameters :\nName: privateKey / Value: {VAR_PRIVATEKEY}\nName: destination / Value: {VAR_DESTINATION}\nName: amount / Value: {VAR_AMOUNT}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Transaction ID:",
+                    "field2": "{VAR_TXID}"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "86",
+                    "itemTask": "[Transaction ID:]{VAR_TXID}",
+                    "itemDescription": "Transaction ID:\n{VAR_TXID}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "1"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "90",
+                    "itemTask": "",
+                    "itemDescription": "Close your conditional block"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_CHOICE}",
+                    "field3": "1",
+                    "field2": "3"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "930",
+                    "itemTask": "{VAR_CHOICE}|3|1",
+                    "itemDescription": "If values are equals\n{VAR_CHOICE}\n3\nPerform the tasks below"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_ACCOUNTID}"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "818",
+                    "itemTask": "{VAR_ACCOUNTID}",
+                    "itemDescription": "{VAR_ACCOUNTID}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Your Hedera account:",
+                    "field2": "{VAR_ACCOUNTID}"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "86",
+                    "itemTask": "[Your Hedera account:]{VAR_ACCOUNTID}",
+                    "itemDescription": "Your Hedera account:\n{VAR_ACCOUNTID}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "1"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "90",
+                    "itemTask": "",
+                    "itemDescription": "Close your conditional block"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_CHOICE}",
+                    "field3": "1",
+                    "field2": "4"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "930",
+                    "itemTask": "{VAR_CHOICE}|4|1",
+                    "itemDescription": "If values are equals\n{VAR_CHOICE}\n4\nPerform the tasks below"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_CREATEURL}",
+                    "field3": "",
+                    "field2": "0",
+                    "field5": "true",
+                    "field4": "ACCOUNT"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "114",
+                    "itemTask": "{VAR_CREATEURL}|0||ACCOUNT|1",
+                    "itemDescription": "{VAR_CREATEURL}\nMethod: GET\nSave result in a variable: {VAR_ACCOUNT}\nWait until the end of the request to continue"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "New Hedera account:",
+                    "field2": "{VAR_ACCOUNT}"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "86",
+                    "itemTask": "[New Hedera account:]{VAR_ACCOUNT}",
+                    "itemDescription": "New Hedera account:\n{VAR_ACCOUNT}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "1"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "90",
+                    "itemTask": "",
+                    "itemDescription": "Close your conditional block"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_CHOICE}",
+                    "field3": "1",
+                    "field2": "5"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "930",
+                    "itemTask": "{VAR_CHOICE}|5|1",
+                    "itemDescription": "If values are equals\n{VAR_CHOICE}\n5\nPerform the tasks below"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "{VAR_MINTURL}",
+                    "field3": "tokenName=NFT;symbol=NFT;supply=1;",
+                    "field2": "TXID"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "111",
+                    "itemTask": "{VAR_MINTURL}|TXID|tokenName=NFT;symbol=NFT;supply=1;",
+                    "itemDescription": "Request: {VAR_MINTURL}\nVariable: {VAR_TXID}\nPOST parameters :\nName: tokenName / Value: NFT\nName: symbol / Value: NFT\nName: supply / Value: 1"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "Token minted:",
+                    "field2": "{VAR_TXID}"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "86",
+                    "itemTask": "[Token minted:]{VAR_TXID}",
+                    "itemDescription": "Token minted:\n{VAR_TXID}"
+                }
+            },
+            {
+                "tasks.profile.fields": {
+                    "field1": "1"
+                },
+                "tasks.profile.config": {
+                    "itemTaskExtra": "",
+                    "requestType": "90",
+                    "itemTask": "",
+                    "itemDescription": "Close your conditional block"
+                }
+            }
+        ]
+    }
+]

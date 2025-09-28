@@ -1,5 +1,8 @@
 {
   "port": 8080,
   "bodyLimit": "1kb",
-  "ethereumNetwork": "https://rinkeby.infura.io/v3/3fe7c90a4ec34aae900a7900d3fb48dc"
+  "hederaNetwork": "testnet",
+  "hederaMirrorNode": "https://testnet.mirrornode.hedera.com",
+  "hederaOperatorId": "0.0.2",
+  "hederaOperatorKey": "302e020100300506032b65700422042091132178e72057a1d7528025956fe39b0b847f200ab59b2fdd367017f3087137"
 }

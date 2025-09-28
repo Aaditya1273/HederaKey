@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HederaKey - Enhanced Domain Resolution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .search-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-hedera {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-hedera:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .domain-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .domain-card:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .domain-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .domain-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .hedera-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .addresses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .address-item {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .address-label {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+
+        .address-value {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #1e293b;
+            word-break: break-all;
+        }
+
+        .hedera-info {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #10b981;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .hedera-info h3 {
+            color: #059669;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hedera-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .hedera-detail {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            color: #16a34a;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .link-hedera-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .link-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .link-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .addresses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 HederaKey Domain Resolution</h1>
+            <p>Enhanced Unstoppable Domains with Hedera Integration</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Domain Search Section -->
+            <div class="search-section">
+                <h2>🔍 Search Domain</h2>
+                <div class="search-form">
+                    <input type="text" id="domainInput" class="search-input" 
+                           placeholder="Enter domain name (e.g., example.crypto, test.nft)">
+                    <button onclick="searchDomain()" class="btn btn-primary">Search Domain</button>
+                    <button onclick="showReverseSearch()" class="btn btn-secondary">Reverse Search</button>
+                </div>
+                
+                <!-- Reverse Search (Hidden by default) -->
+                <div id="reverseSearchForm" style="display: none;">
+                    <div class="search-form">
+                        <input type="text" id="addressInput" class="search-input" 
+                               placeholder="Enter addresses (comma-separated)">
+                        <button onclick="reverseSearch()" class="btn btn-primary">Reverse Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Resolving domain and querying Hedera Mirror Node...</p>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-section">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+
+        async function searchDomain() {
+            const domain = document.getElementById('domainInput').value.trim();
+            if (!domain) {
+                showError('Please enter a domain name');
+                return;
+            }
+
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/domain/resolve/${domain}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayDomainResults(data);
+                } else {
+                    showError(data.error || 'Failed to resolve domain');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        }
+
+        async function reverseSearch() {
+            const addresses = document.getElementById('addressInput').value.trim();
+            if (!addresses) {
+                showError('Please enter at least one address');
+                return;
+            }
+
+            showLoading();
+            
+            try {
+                const addressList = addresses.split(',').map(addr => addr.trim());
+                const response = await fetch(`${API_BASE}/domain/reverse`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ addresses: addressList })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayReverseResults(data);
+                } else {
+                    showError(data.error || 'Failed to perform reverse search');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        }
+
+        async function linkToHedera(domain) {
+            const hederaAccountId = prompt('Enter your Hedera Account ID (e.g., 0.0.123456):');
+            if (!hederaAccountId) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/domain/link-hedera`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        domain: domain,
+                        hederaAccountId: hederaAccountId,
+                        signature: null // In real implementation, this would be a cryptographic signature
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(`Successfully linked ${domain} to Hedera account ${hederaAccountId}`);
+                    // Refresh the domain data
+                    searchDomain();
+                } else {
+                    showError(data.error || 'Failed to link domain to Hedera wallet');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        }
+
+        function displayDomainResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const hasHedera = data.hederaMetadata && data.addresses.hedera;
+            
+            resultsDiv.innerHTML = `
+                <div class="domain-card">
+                    <div class="domain-header">
+                        <div class="domain-name">${data.domain}</div>
+                        ${hasHedera ? '<span class="hedera-badge">🌐 Hedera Enabled</span>' : ''}
+                    </div>
+                    
+                    <div class="addresses-grid">
+                        ${Object.entries(data.addresses).map(([chain, address]) => 
+                            address ? `
+                                <div class="address-item">
+                                    <div class="address-label">${chain.toUpperCase()}</div>
+                                    <div class="address-value">${address}</div>
+                                </div>
+                            ` : ''
+                        ).join('')}
+                    </div>
+                    
+                    ${data.social.twitter || data.social.discord || data.social.telegram ? `
+                        <div class="addresses-grid">
+                            ${data.social.twitter ? `
+                                <div class="address-item">
+                                    <div class="address-label">Twitter</div>
+                                    <div class="address-value">@${data.social.twitter}</div>
+                                </div>
+                            ` : ''}
+                            ${data.social.discord ? `
+                                <div class="address-item">
+                                    <div class="address-label">Discord</div>
+                                    <div class="address-value">${data.social.discord}</div>
+                                </div>
+                            ` : ''}
+                            ${data.social.telegram ? `
+                                <div class="address-item">
+                                    <div class="address-label">Telegram</div>
+                                    <div class="address-value">@${data.social.telegram}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    ` : ''}
+                    
+                    ${hasHedera ? `
+                        <div class="hedera-info">
+                            <h3>🌐 Hedera Account Information</h3>
+                            <div class="hedera-details">
+                                <div class="hedera-detail">
+                                    <div class="address-label">Account ID</div>
+                                    <div class="address-value">${data.hederaMetadata.account_id}</div>
+                                </div>
+                                <div class="hedera-detail">
+                                    <div class="address-label">Balance</div>
+                                    <div class="address-value">${data.hederaMetadata.balance} tinybars</div>
+                                </div>
+                                <div class="hedera-detail">
+                                    <div class="address-label">Token Relationships</div>
+                                    <div class="address-value">${data.hederaMetadata.token_relationships}</div>
+                                </div>
+                                <div class="hedera-detail">
+                                    <div class="address-label">Account Type</div>
+                                    <div class="address-value">${data.hederaMetadata.account_type}</div>
+                                </div>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="link-hedera-section">
+                            <h3>🔗 Link to Hedera Wallet</h3>
+                            <p>Connect this domain to your Hedera account for enhanced functionality.</p>
+                            <button onclick="linkToHedera('${data.domain}')" class="btn btn-hedera">
+                                Link to Hedera Wallet
+                            </button>
+                        </div>
+                    `}
+                </div>
+            `;
+            
+            hideLoading();
+            resultsDiv.style.display = 'block';
+        }
+
+        function displayReverseResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            resultsDiv.innerHTML = `
+                <h2>🔄 Reverse Search Results</h2>
+                <p>Found ${data.totalFound} domains, ${data.hedera_enabled_domains || 0} with Hedera integration</p>
+                
+                ${data.results.map(result => `
+                    <div class="domain-card">
+                        <div class="domain-header">
+                            <div class="domain-name">${result.domain || 'No domain found'}</div>
+                            ${result.has_hedera ? '<span class="hedera-badge">🌐 Hedera Enabled</span>' : ''}
+                        </div>
+                        
+                        ${result.enhanced ? `
+                            <div class="addresses-grid">
+                                ${Object.entries(result.enhanced.addresses).map(([chain, address]) => 
+                                    address ? `
+                                        <div class="address-item">
+                                            <div class="address-label">${chain.toUpperCase()}</div>
+                                            <div class="address-value">${address}</div>
+                                        </div>
+                                    ` : ''
+                                ).join('')}
+                            </div>
+                        ` : '<p>No additional domain data available</p>'}
+                    </div>
+                `).join('')}
+            `;
+            
+            hideLoading();
+            resultsDiv.style.display = 'block';
+        }
+
+        function showReverseSearch() {
+            const form = document.getElementById('reverseSearchForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showError(message) {
+            hideLoading();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="error">❌ ${message}</div>`;
+            resultsDiv.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            const resultsDiv = document.getElementById('results');
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.innerHTML = `✅ ${message}`;
+            resultsDiv.insertBefore(successDiv, resultsDiv.firstChild);
+        }
+
+        // Allow Enter key to trigger search
+        document.getElementById('domainInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDomain();
+            }
+        });
+
+        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                reverseSearch();
+            }
+        });
+    </script>
+</body>
+</html>

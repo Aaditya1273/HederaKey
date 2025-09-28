@@ -1,0 +1,63 @@
+{
+  "name": "hedera-nfc-wallet",
+  "version": "1.0.0",
+  "description": "Hedera NFC Wallet with React and WalletConnect",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "dev-server": "nodemon -w src --exec \"babel-node src\"",
+    "build-server": "babel src -s -D -d dist",
+    "start-server": "node dist",
+    "prestart-server": "npm run -s build-server"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "@hashgraph/sdk": "^2.49.2",
+    "@walletconnect/client": "^1.8.0",
+    "@walletconnect/qrcode-modal": "^1.8.0",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "web3": "^4.10.0",
+    "axios": "^1.6.0",
+    "styled-components": "^6.1.0",
+    "react-router-dom": "^6.8.0",
+    "react-qr-code": "^2.0.11",
+    "react-hot-toast": "^2.4.1",
+    "framer-motion": "^10.16.0",
+    "lucide-react": "^0.294.0",
+    "body-parser": "^1.20.3",
+    "compression": "^1.8.1",
+    "express": "^4.21.2",
+    "helmet": "^3.23.3",
+    "morgan": "^1.10.1",
+    "winston": "^2.4.2",
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "nodemon": "^3.1.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^9.5.0",
+    "prettier": "^3.1.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:8080"
+}
